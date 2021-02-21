@@ -1,0 +1,50 @@
+form{
+    display:block;
+    background-color:rgb(13, 51, 126);
+    width:100%;
+    height:auto;
+}
+
+form input, form select{
+    border-style:hidden;
+    border-radius:10px;
+    outline:none;
+    height:60px;
+    font-size:20px;
+    color:rgb(28, 41, 98);
+    font-weight:600;
+}
+
+p{
+color:white;
+margin-block-start: 5px !important;
+    margin-block-end: 5px !important;
+    font-size:25px;
+}
+
+.column p{
+    font-size:20px;
+}
+
+form button{
+    height:60px;
+    width:60px !important;
+    background-color:rgb(253, 181, 53);
+    border-radius:10px;
+    cursor:pointer;
+}
+
+form button:focus{
+    outline:none;
+}
+
+form select{
+width:20%;}
+
+.conversion i{
+    color:rgb(255,255,255);
+}
+
+*{
+margin:0;
+padding:0;}

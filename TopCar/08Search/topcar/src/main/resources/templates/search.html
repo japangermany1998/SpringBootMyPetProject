@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Car search</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+</head>
+<body>
+  <form action="#" th:action="@{/car/search}" method="post"
+          novalidate="novalidate" th:object="${searchrequest}" >
+      <input type="text" th:field="*{keyword}" placeholder="type keyword here"/><br><br>
+      <button type="submit">Search</button>
+  </form>
+</body>
+<script src="/vendor/jquery/jquery-3.4.1.min.js"></script>
+
+<!-- Popper.js -->
+<script src="/vendor/popper/popper.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+</html>

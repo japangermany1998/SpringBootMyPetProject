@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/fontawesome-free-5.15.1-web/css/all.css">
+</head>
+<body class="container pt-5 d-flex justify-content-center">
+<form action="" method="post" th:object="${currency}" class="pt-5 pb-5 pl-4 pr-4 h-100">
+    <div class="d-flex align-items-center h-auto w-100 justify-content-between">
+    <div class="d-flex align-items-center h-100 justify-content-between" style="width:calc(100% - 65px);">
+    <div class="mr-2 w-100 h-100 d-flex flex-column justify-content-between column">
+    <p>Amount</p>
+    <input type="text" placeholder="0.0" th:field="*{amount}" class="w-100 pl-2">
+    </div>
+    <div class="mr-3 w-100 h-100 d-flex flex-column justify-content-between column">
+    <p>From</p>
+    <select th:field="*{currencyA}" class="w-100">
+        <option th:each="country:${countries}" th:value="${country.code}" th:utext="${country.currency}"></option>
+    </select>
+    </div>
+    <div class="d-flex flex-column conversion mr-3 align-self-end justify-content-center" style="height:60px;">
+        <i class="fas fa-arrow-right"></i>
+        <i class="fas fa-arrow-left"></i>
+    </div>
+    <div class="mr-2 w-100 h-100 d-flex flex-column justify-content-between column">
+    <p>To</p>
+    <select th:field="*{currencyB}" class="w-100">
+        <option th:each="country:${countries}" th:value="${country.code}" th:utext="${country.currency}"></option>
+    </select>
+    </div>
+    </div>
+        <button class="align-self-end" type="submit">
+            <div class="d-flex justify-content-center align-items-center h-100" ><i class="fas fa-arrow-right"></i></div>
+        </button>
+    </div>
+    <div class="w-100 d-flex align-items-center flex-column mt-3" th:if="${checkPost}==true">
+    <p th:text="*{amount} +' '+ *{currencyA}+ ' ='"></p>
+    <div class="d-flex align-items-center"><p th:text="${result}" style="font-size:40px; font-weight:bold;"></p>&nbsp;<p th:text="*{currencyB}"></p></div>
+    <p th:text="1 + ' '+ *{currencyA} + ' = '+${exchangeA}+' '+ *{currencyB} " style="font-weight:bold; font-size:20px;"></p>
+    <p th:text="1 + ' '+ *{currencyB} + ' = '+${exchangeB}+' '+ *{currencyA} " style="font-weight:bold; font-size:20px;"></p>
+    </div>
+</form>
+
+</body>
+</html>

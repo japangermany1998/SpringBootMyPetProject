@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/create}" method="post" th:object="${User}">
+    <table>
+        <tr>
+            <td>Fullname: </td>
+            <td>
+                <input type="text" placeholder="Nhap email" th:field="*{Fullname}"></td>
+        </tr>
+        <tr>
+            <td>Email: </td>
+            <td>
+                <input type="text" placeholder="Nhap email" th:field="*{email}"></td>
+        </tr>
+        <tr>
+            <td>Password: </td>
+            <td>
+                <input type="password" placeholder="Nhap password" th:field="*{password}"></td>
+        </tr>
+    </table>
+    <br>
+    <button type="submit">Create</button>
+</form>
+<p th:text="${display}"></p>
+</body>
+</html>

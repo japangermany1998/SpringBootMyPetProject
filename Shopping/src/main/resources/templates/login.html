@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body>
+<div class="d-flex justify-content-center">
+<form th:action="@{/login}" method="post" th:object="${User}">
+    <table>
+    <tr>
+        <td>Email: </td>
+        <td>
+        <input type="text" placeholder="Nhap email" th:field="*{email}"></td>
+    </tr>
+    <tr>
+        <td>Password: </td>
+        <td>
+        <input type="password" placeholder="Nhap password" th:field="*{password}"></td>
+    </tr>
+    </table>
+    <button type="submit">Login</button>
+    <div>
+        <a href="/forgetpass">Quên mật khẩu</a><br>
+        <a href="/create">Chưa có tài khoản, muốn đăng ký</a>
+    </div>
+</form>
+</div>
+
+</body>
+</html>

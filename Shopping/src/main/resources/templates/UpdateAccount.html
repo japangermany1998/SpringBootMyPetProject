@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body>
+<div class="d-flex justify-content-center">
+    <form th:action="@{/update}" method="post" th:object="${user}">
+        <input type="hidden" th:field="*{id}">
+        <table>
+            <tr>
+                <td>Fullname: </td>
+                <td>
+                    <input type="text" placeholder="Nhap email" th:field="*{Fullname}"></td>
+            </tr>
+            <tr>
+                <td>Email: </td>
+                <td>
+                    <input type="text" placeholder="Nhap email" th:field="*{email}"></td>
+            </tr>
+            <tr>
+                <td>Password: </td>
+                <td>
+                    <input type="password" placeholder="Nhap password" th:field="*{password}"></td>
+            </tr>
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+    <a th:href="@{'/login/'+${user.id}}">Back</a>
+</div>
+</body>
+</html>
