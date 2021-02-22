@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="layout::head">
+</head>
+<body>
+<div class="container">
+<header th:replace="layout :: menu(title=${bug.id > 0 ? 'Edit a complain' : 'Create new complain'})"></header>
+    <form id="formBug" action="#" th:action="@{/bug}" th:object="${bug}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}"/>
+<!--        <input type="hidden" th:field="*{user_id}"/>-->
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Title of your post">
+            <p class="alert alert-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error></p>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" th:field="*{content}" id="content" rows="10" cols="70"></textarea>
+            <p class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error></p>
+        </div>
+        <div>
+            <table>
+                <tr><td>File to upload:</td><td><input type="file" name="file" id="fileImage" accept="image/png, image/jpeg" multiple/></td></tr>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <div id="images" class="d-flex justify-content-between">
+        <img th:each="image:${bug.images}" th:src="@{${image.Image}}" alt="">
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+  $(document).ready(function(){
+    var multipartfile=[];
+
+    $('#fileImage').change(function(){
+        $('#images').html('');
+        multipartfile.push($(this)[0]);
+        // for(var i = 0; i < $(this)[0].files.length; i++){
+        //     showImageThumbnail($(this)[0],i);
+        // }
+        for (var i=0;i<multipartfile.length;i++){
+            for (var j=0;j<multipartfile.files.length;j++){
+                showImageThumbnail(multipartfile[i],j);
+            }
+        }
+    });
+
+    $('#formBug').submit(function (event) {
+        var data=new FormData();
+        $.each(multipartfile,function (i,file) {
+            for (var i=0;i<file.length;i++) {
+                data.append("file1", file.files[i]);
+            }
+        })
+       $.ajax({
+           url:"/bug",
+           method:"POST",
+           data: data,
+           processData: false, //prevent jQuery from automatically transforming the data into a query string
+           contentType: false,
+           cache: false,
+           success:(data) =>{
+               alert('Success');
+           },
+           error:(e) =>{
+
+           }
+       })
+    });
+
+  });
+    //Hiển thị ảnh sau khi chọn file
+  function showImageThumbnail(fileInput,index){
+      file = fileInput.files[index];
+      reader = new FileReader();
+
+      reader.onload = function (e){
+         $('#images').append('<span class="pip"></span>');
+         $('<img>').attr('src',e.target.result).width(200).height(200).appendTo($('.pip')[index]);
+         $('<br>').appendTo($('.pip')[index]);
+         $("<span class=\"remove\">Remove</span>").appendTo($('.pip')[index]);
+         $(".remove").click(function(){
+            $(this).parent(".pip").remove();
+         });
+      }
+
+      reader.readAsDataURL(file);
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="layout::head">
+</head>
+<body>
+<div class="container">
+    <menu th:replace="layout :: menu(title=${#sets.contains(user.roles,roleSupport) ? 'Every complaints' : 'Your complaints'})"></menu>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>title</th>
+            <th>User</th>
+            <th>Status</th>
+        </tr>
+        <tr th:if="${#sets.contains(user.roles,roleSupport)}" th:each="bug:${Bugs}">
+            <td><a th:href="@{'/showBug/'+${bug.id}}" th:text="${bug.id}"></a></td>
+            <td th:text="${bug.title}"></td>
+            <td th:text="${bug.user.fullname}"></td>
+            <td th:text="${bug.status}"></td>
+        </tr>
+        <tr th:unless="${#sets.contains(user.roles,roleSupport)}" th:each="bug:${userBugs}">
+            <td><a th:href="@{'/showBug/'+${bug.id}}" th:text="${bug.id}"></a></td>
+            <td th:text="${bug.title}"></td>
+            <td th:text="${bug.user.fullname}"></td>
+            <td th:text="${bug.status}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
