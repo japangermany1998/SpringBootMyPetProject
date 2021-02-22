@@ -1,38 +1,28 @@
 package vn.techmaster.blog.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "tag")
-@Table(name = "tag")
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "tags")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
-    @Id private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    List<Post> posts = new ArrayList<>();
-
-    public Tag(String name) {
-        this.name = name;
-    }
+    @ManyToMany(mappedBy = "tags")
+    List<Post> posts=new ArrayList<>();
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -12,6 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,18 +22,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-  @Id 
+  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String content;
   private LocalDateTime lastUpdate;
   @PrePersist //Trước khi lưu khi khởi tạo record
   public void prePersist() {
-      lastUpdate = LocalDateTime.now();
+    lastUpdate = LocalDateTime.now();
   }
   @PreUpdate //Khi cập nhật record
   public void preUpdate() {
-      lastUpdate = LocalDateTime.now();
+    lastUpdate = LocalDateTime.now();
   }
 
   public Comment(String content) {
@@ -40,10 +41,18 @@ public class Comment {
   }
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private User commenter; //Mỗi comment phải do một commenter viết
+  private User user; //Mỗi comment phải do một commenter viết
+
+  public void setUser(User user) {
+    user.getComments().add(this);
+    this.user = user;
+  }
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Post post; //Mỗi comment phải gắn vào một post
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  private Bug bug;
 
   public Long getId() {
     return id;
@@ -69,12 +78,8 @@ public class Comment {
     this.lastUpdate = lastUpdate;
   }
 
-  public User getCommenter() {
-    return commenter;
-  }
-
-  public void setCommenter(User commenter) {
-    this.commenter = commenter;
+  public User getUser() {
+    return user;
   }
 
   public Post getPost() {
@@ -83,5 +88,25 @@ public class Comment {
 
   public void setPost(Post post) {
     this.post = post;
+  }
+
+  public Bug getBug() {
+    return bug;
+  }
+
+  public void setBug(Bug bug) {
+    this.bug = bug;
+  }
+
+  @Override
+  public String toString() {
+    return "Comment{" +
+            "id=" + id +
+            ", content='" + content + '\'' +
+            ", lastUpdate=" + lastUpdate +
+            ", user=" + user +
+            ", post=" + post +
+            ", bug=" + bug +
+            '}';
   }
 }

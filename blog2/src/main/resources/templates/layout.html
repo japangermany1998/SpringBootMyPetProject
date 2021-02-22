@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:fragment="head">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-  <title th:text="${user} ? ${user.fullname} + '\'s micro blog': 'Home page'"></title>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
-<body>
-  <div th:fragment="menu(title)" class="mb-3">
-    <h1 th:text="${title}">Home Page</h1>
-    <a href="/" class="me-4">Home</a>
-    <a href="/login" class="me-4" th:style="${user==null ? 'display:inline' : 'display:none'}">Login</a>
-    <a href="/post" class="me-4" th:style="${user==null ? 'display:none' : 'display:inline'}">Write a post</a>
-    <a href="/bug" class="me-4" th:if="${user!=null}" th:style="${#sets.contains(user.roles,roleCustomer) ? 'display:inline' : 'display:none'}">Write a complain</a>
-    <a href="/showBug" th:if="${user != null}" class="me-4">Show complaints</a>
-    <a href="/logout" class="me-4" th:style="${user==null ? 'display:none' : 'display:inline'}" th:text="${user!=null ? 'Log out as ' + user.fullname : ''}">Logout</a><br>
-  </div> 
+<body class="container">
+<div class="d-flex justify-content-between">
+  <h1 th:text="'Post của'+ ${user.fullname}"></h1>
+  <a href="/logout">Logout</a>
+</div>
+<form th:action="@{/write}" method="post" th:object="${post}">
+  <table>
+    <tr>
+      <td><p>Title:</p></td>
+      <td><input type="text" th:field="*{title}"></td>
+    </tr>
+    <tr>
+      <td><p>Content:</p></td>
+      <td><textarea type="text" th:field="*{content}"></textarea></td>
+    </tr>
+    <input type="hidden" th:field="*{id}"><br>
+    <tr>
+      <td>Tagname</td>
+      <td><th:block th:each="tagname:${Tags}">
+        <input type="checkbox" th:field="*{tags}" th:value="${tagname.name}">
+        <label th:text="${tagname.name}"></label>
+      </th:block></td>
+    </tr>
+  </table>
+  <button type="submit">Submit</button>
+</form>
+
 </body>
 </html>

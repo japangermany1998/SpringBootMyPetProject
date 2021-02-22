@@ -5,7 +5,7 @@
 <body>
 <div class="container">
 <header th:replace="layout :: menu(title=${bug.id > 0 ? 'Edit a complain' : 'Create new complain'})"></header>
-    <form id="formBug" action="#" th:action="@{/bug}" th:object="${bug}" method="post" enctype="multipart/form-data">
+    <form action="#" th:action="@{/bug}" th:object="${bug}" method="post" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
 <!--        <input type="hidden" th:field="*{user_id}"/>-->
         <div class="mb-3">
@@ -33,43 +33,43 @@
 </body>
 <script type="text/javascript">
   $(document).ready(function(){
-    var multipartfile=[];
+    // var multipartfile=[];
 
     $('#fileImage').change(function(){
         $('#images').html('');
-        multipartfile.push($(this)[0]);
-        // for(var i = 0; i < $(this)[0].files.length; i++){
-        //     showImageThumbnail($(this)[0],i);
-        // }
-        for (var i=0;i<multipartfile.length;i++){
-            for (var j=0;j<multipartfile.files.length;j++){
-                showImageThumbnail(multipartfile[i],j);
-            }
+        // multipartfile.push($(this)[0]);
+        for(var i = 0; i < $(this)[0].files.length; i++){
+            showImageThumbnail($(this)[0],i);
         }
+        // for (var i=0;i<multipartfile.length;i++){
+        //     for (var j=0;j<multipartfile.files.length;j++){
+        //         showImageThumbnail(multipartfile[i],j);
+        //     }
+        // }
     });
 
-    $('#formBug').submit(function (event) {
-        var data=new FormData();
-        $.each(multipartfile,function (i,file) {
-            for (var i=0;i<file.length;i++) {
-                data.append("file1", file.files[i]);
-            }
-        })
-       $.ajax({
-           url:"/bug",
-           method:"POST",
-           data: data,
-           processData: false, //prevent jQuery from automatically transforming the data into a query string
-           contentType: false,
-           cache: false,
-           success:(data) =>{
-               alert('Success');
-           },
-           error:(e) =>{
-
-           }
-       })
-    });
+    // $('#formBug').submit(function (event) {
+    //     var data=new FormData();
+    //     $.each(multipartfile,function (i,file) {
+    //         for (var i=0;i<file.length;i++) {
+    //             data.append("file1", file.files[i]);
+    //         }
+    //     })
+    //    $.ajax({
+    //        url:"/bug",
+    //        method:"POST",
+    //        data: data,
+    //        processData: false, //prevent jQuery from automatically transforming the data into a query string
+    //        contentType: false,
+    //        cache: false,
+    //        success:(data) =>{
+    //            alert('Success');
+    //        },
+    //        error:(e) =>{
+    //
+    //        }
+    //    })
+    // });
 
   });
     //Hiển thị ảnh sau khi chọn file

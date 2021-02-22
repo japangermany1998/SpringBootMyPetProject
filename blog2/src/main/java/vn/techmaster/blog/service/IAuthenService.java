@@ -1,24 +1,50 @@
 package vn.techmaster.blog.service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import vn.techmaster.blog.DTO.UserInfo;
 import vn.techmaster.blog.controller.request.LoginRequest;
-import vn.techmaster.blog.model.Role;
+import vn.techmaster.blog.model.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Set;
 
 public interface IAuthenService {
-  public UserInfo login(LoginRequest loginRequest) throws AuthenException;
+  public void login(LoginRequest loginRequest) throws AuthenException;
 
-    void addRoleSupporter();
+  public User findUserbyMail(String email);
 
-    Role getRoleuser(String role);
+  public void addPostUser(String email, Post post) throws AuthenException;
 
-    public boolean isLogined(HttpServletRequest request);
+  void addPostComment(long id, String content,String email) throws AuthenException;
 
-  public UserInfo getLoginedUser(HttpServletRequest request);
+  Post findPostId(long id);
 
-  public void setLoginedCookie(HttpServletResponse response, UserInfo user);
+  public void editPost(long id, String title, String content, Set<Tag> tags) throws AuthenException;
 
-  public void clearLoginedCookie(HttpServletResponse response);
-} 
+  public void deleteComment(long id,String email) throws AuthenException;
+
+  List<Post> getAllPosts();
+
+  List<Post> searchByKeywordAndTag(String keyword, List<Tag> tagname);
+
+  List<Tag> getAllTags();
+
+  String hashPassword(String plainTextPassword);
+
+  List<User> getAllUsers();
+
+  void saveUser(String id,String password);
+
+  void deletePost(long id,String email) throws AuthenException;
+
+  void createAccount(String fullname, String email, String password) throws AuthenException;
+
+  void addRoleUser(String role, String email) throws AuthenException;
+
+  boolean isAdmin(String email);
+
+  List<Role> getAllRoles();
+
+  void deleteRoleUser(String email, String role) throws AuthenException;
+}

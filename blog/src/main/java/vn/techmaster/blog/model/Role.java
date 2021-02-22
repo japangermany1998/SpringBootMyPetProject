@@ -1,10 +1,11 @@
 package vn.techmaster.blog.model;
 
-import lombok.Data;
+        import lombok.Data;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+        import javax.persistence.*;
+        import java.util.ArrayList;
+        import java.util.List;
+        import java.util.Objects;
 
 @Entity
 @Table(name = "role")
@@ -38,6 +39,16 @@ public class Role {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public int hashCode() {
+        return Objects.hash(this.name);
+    }
+
+    public boolean equals(Object o) {
+        if (o == this) { return true; }
+        if (o == null || !(o instanceof Role) ) { return false; }
+        return Objects.equals(this.name, ((Role) o).name);
     }
 }
 

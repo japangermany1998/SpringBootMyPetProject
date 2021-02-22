@@ -14,12 +14,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "user")
-@Table(name = "user")
+@Table(name = "users")  //Để không bị lỗi khi kết nối vào Postgresql
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  @Id private long id;
 
   @Column(nullable = false, length = 64)
   private String fullname;
@@ -33,37 +32,20 @@ public class User {
 
   //Một User viết nhiều Post
   @OneToMany(
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
+          cascade = CascadeType.ALL,
+          orphanRemoval = true,
+          fetch = FetchType.LAZY
   )
   @JoinColumn(name = "user_id")
   private List<Post> posts = new ArrayList<>();
-
-  public User(String fullname, String email) {
-    this.fullname=fullname;
-    this.email=email;
-  }
-
   public void addPost(Post post) {
     posts.add(post);
-    post.setAuthor(this);
+    post.setUser(this);
   }
 
   public void removePost(Post post) {
     posts.remove(post);
-    post.setAuthor(null);
-  }
-
-  //Một User viết nhiều Comment
-  @OneToMany(
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
-  )
-  @JoinColumn(name = "user_id")
-  private List<Comment> comments = new ArrayList<>();
-  public void addComment(Comment comment) {
-    comments.add(comment);
-    comment.setCommenter(this);
+    post.setUser(null);
   }
 
   @ManyToMany()
@@ -72,7 +54,7 @@ public class User {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
-  private Set<Role> roles= new HashSet<>();
+  private Set<Role> roles=new HashSet<>();
 
   public void addRole(Role role){
     roles.add(role);
@@ -84,12 +66,33 @@ public class User {
     role.getUsers().remove(this);
   }
 
-  public Set<Role> getRoles() {
-    return roles;
+  @OneToMany(cascade = CascadeType.ALL,
+          orphanRemoval = true,
+          fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private List<Bug> bugs=new ArrayList<>();
+
+  public void addBug(Bug bug){
+    bugs.add(bug);
+    bug.setUser(this);
   }
 
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
+  public void removeBug(Bug bug){
+    bugs.remove(bug);
+    bug.setUser(null);
+  }
+
+  //Một User viết nhiều Comment
+  @OneToMany(
+          cascade = CascadeType.ALL,
+          orphanRemoval = true,
+          fetch = FetchType.LAZY
+  )
+  @JoinColumn(name = "user_id")
+  private List<Comment> comments = new ArrayList<>();
+  public void removeComment(Comment comment) {
+    comments.remove(comment);
+    comment.setUser(null);
   }
 
   public long getId() {
@@ -132,16 +135,27 @@ public class User {
     this.posts = posts;
   }
 
+  public Set<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
+  }
+
+  public List<Bug> getBugs() {
+    return bugs;
+  }
+
+  public void setBugs(List<Bug> bugs) {
+    this.bugs = bugs;
+  }
+
   public List<Comment> getComments() {
     return comments;
   }
 
   public void setComments(List<Comment> comments) {
     this.comments = comments;
-  }
-
-  public void removeComment(Comment comment) {
-    comments.remove(comment);
-    comment.setCommenter(null);
   }
 }

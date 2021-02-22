@@ -59,7 +59,7 @@ public class BugController {
 
     @PostMapping("/bug")
     public String BugAddEdit(@ModelAttribute BugRequest bugRequest, BindingResult result, HttpServletRequest request, Model model
-    , @RequestParam("file1") MultipartFile[] multipartFile) throws IOException {
+    , @RequestParam("file") MultipartFile[] multipartFile) throws IOException {
         if(result.hasErrors()){
             model.addAttribute("bug",new BugRequest());
             return "Bug";

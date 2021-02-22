@@ -40,15 +40,4 @@ public class Role {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
-    public int hashCode() {
-        return Objects.hash(this.name);
-    }
-
-    public boolean equals(Object o) {
-        if (o == this) { return true; }
-        if (o == null || !(o instanceof Role) ) { return false; }
-        return Objects.equals(this.name, ((Role) o).name);
-    }
 }
-

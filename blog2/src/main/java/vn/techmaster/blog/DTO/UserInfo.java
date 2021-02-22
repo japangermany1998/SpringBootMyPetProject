@@ -11,5 +11,4 @@ public class UserInfo {
   private long id;
   private String fullname;
   private String email;
-  private Set<Role> roles;
 }

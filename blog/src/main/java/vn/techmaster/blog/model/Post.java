@@ -1,33 +1,44 @@
+
 package vn.techmaster.blog.model;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+        import java.time.LocalDateTime;
+        import java.util.ArrayList;
+        import java.util.HashSet;
+        import java.util.List;
+        import java.util.Set;
 
-import javax.persistence.*;
+        import javax.persistence.CascadeType;
+        import javax.persistence.Column;
+        import javax.persistence.Entity;
+        import javax.persistence.FetchType;
+        import javax.persistence.GeneratedValue;
+        import javax.persistence.GenerationType;
+        import javax.persistence.Id;
+        import javax.persistence.JoinColumn;
+        import javax.persistence.JoinTable;
+        import javax.persistence.ManyToMany;
+        import javax.persistence.ManyToOne;
+        import javax.persistence.OneToMany;
+        import javax.persistence.PrePersist;
+        import javax.persistence.PreUpdate;
+        import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+        import com.fasterxml.jackson.annotation.JsonManagedReference;
+        import lombok.AllArgsConstructor;
+        import lombok.Data;
+        import lombok.NoArgsConstructor;
 
 @Entity(name = "post")
 @Table(name = "post")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post { 
+public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
     private String title;
+    @Column(length=5000)
     private String content;
     private LocalDateTime lastUpdate;
-
-    public Post(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
     @PrePersist //Trước khi lưu khi khởi tạo record
     public void prePersist() {
         lastUpdate = LocalDateTime.now();
@@ -36,11 +47,17 @@ public class Post {
     public void preUpdate() {
         lastUpdate = LocalDateTime.now();
     }
+
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
     //-------
     @OneToMany(
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
+    @JsonManagedReference
     @JoinColumn(name = "post_id")
     private List<Comment> comments = new ArrayList<>();
     public void addComment(Comment comment) {
@@ -52,32 +69,31 @@ public class Post {
         comments.remove(comment);
         comment.setPost(null);
     }
+    //------
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;  //Tác giả viết post
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User author;
+    //------------
+    //Quan hệ nhiều nhiều:
+    //- Một post được phân loại bởi 1 hay nhiều tag.
+    //- Ngược lại mỗi tag dùng để phân loại nhiều post
 
-    @ManyToMany()
-    @JoinTable(name = "post_tag",
+    @ManyToMany
+    @JoinTable(
+            name = "post_tag",
             joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tags=new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 
-    public void addTag(Tag tag){
+    public void addTag(Tag tag) {
         tags.add(tag);
         tag.getPosts().add(this);
     }
 
-    public void removeTag(Tag tag){
+    public void removeTag(Tag tag) {
         tags.remove(tag);
         tag.getPosts().remove(this);
-    }
-
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
     }
 
     public Long getId() {
@@ -120,11 +136,19 @@ public class Post {
         this.comments = comments;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }
