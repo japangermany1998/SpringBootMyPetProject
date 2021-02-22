@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import vn.techmaster.blog.DTO.PostMapper;
 import vn.techmaster.blog.controller.request.CommentRequest;
 import vn.techmaster.blog.controller.request.PostRequest;
-import vn.techmaster.blog.model.Comment;
-import vn.techmaster.blog.model.Post;
-import vn.techmaster.blog.model.Tag;
-import vn.techmaster.blog.model.User;
+import vn.techmaster.blog.model.*;
 import vn.techmaster.blog.repository.PostRepository;
 import vn.techmaster.blog.repository.TagRepository;
 import vn.techmaster.blog.repository.UserRepository;
@@ -81,7 +78,7 @@ public class PostService implements IPostService {
   }
 
   @Override
-  public void addComment(CommentRequest commentRequest, long user_id) throws PostException {
+  public Comment addComment(CommentRequest commentRequest, long user_id) throws PostException {
     Optional<Post> oPost = postRepo.findById(commentRequest.getPost_id());
     Optional<User> oUser = userRepo.findById(user_id);
     if (oPost.isPresent() && oUser.isPresent()) {
@@ -90,9 +87,19 @@ public class PostService implements IPostService {
       comment.setUser(oUser.get());
       post.addComment(comment);
       postRepo.flush();
+      return comment;
     } else {
       throw new PostException("Post or User is missing");
     }
+  }
+
+  @Override
+  public List<Comment> getAllPostComment(String id) throws PostException {
+    Optional<Post> postOptional=postRepo.findById(Long.valueOf(id));
+    if(postOptional.isPresent()) {
+      return postOptional.get().getComments();
+    }
+    throw new PostException("Not find Post");
   }
 
   @Override

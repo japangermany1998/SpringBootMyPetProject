@@ -106,9 +106,9 @@ public class PostController {
       Set<Tag> tags = post.getTags();
       model.addAttribute("tags", tags);
 
-      List<Comment> comments = post.getComments();
-      Collections.reverse(comments);
-      model.addAttribute("comments", comments); //Trả  về danh sách comment
+//      List<Comment> comments = post.getComments();
+//      Collections.reverse(comments);
+//      model.addAttribute("comments", comments); //Trả  về danh sách comment
 
       UserInfo user = authenService.getLoginedUser(request); //Login user
 

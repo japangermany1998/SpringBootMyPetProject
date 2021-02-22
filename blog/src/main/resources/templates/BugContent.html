@@ -5,7 +5,6 @@
 <body>
 <div class="container">
     <menu th:replace="layout_bug :: menu"> </menu>
-    <input type="text" th:field="${bug.id}" style="display:none;" id="bug_id">
     <div class="mt-3 mb-3" th:if="${#sets.contains(user.roles,roleSupport)}">
         <p>Set Status:</p>
         <form class="d-flex" action="#" th:action="@{/updateStatus}" method="post" th:object="${bug}">
@@ -26,7 +25,7 @@
     <hr>
     <div class="d-flex" th:classappend="${user!=null && user.id==bug.user.id ? 'd-inline' : 'd-none'}">
         <form action="#" th:action="@{/bug/delete}" method="post" class="me-3">
-            <input type="hidden" th:field="${bug.id}">
+            <input type="text" th:field="${bug.id}" style="display:none;" id="bug_id">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
 
@@ -65,7 +64,7 @@
 
     function getAllComments() {
         $.ajax({
-            url:"/commentPost/"+$('#bug_id').val(),
+            url:"/commentBug/"+$('#bug_id').val(),
             success: (result) =>{
                 if(result.length > 0){
                     $.each(result,function (index,value) {

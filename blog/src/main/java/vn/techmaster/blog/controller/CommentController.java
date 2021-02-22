@@ -36,22 +36,28 @@ public class CommentController {
 
   ObjectMapper mapper = new ObjectMapper();
 
-//  @PostMapping("/commentPost")
-//  public String handlePostComment(@ModelAttribute CommentRequest commentRequest, HttpServletRequest request) {
-//    UserInfo userLogin = authenService.getLoginedUser(request);
-//    if (userLogin != null) {
-//      try {
-//        postService.addComment(commentRequest, userLogin.getId());
-//      } catch (PostException e) {
-//        e.printStackTrace();
-//      }
-//
-//      return "redirect:/post/" + commentRequest.getPost_id();
-//
-//    } else {
-//      return Route.HOME;
-//    }
-//  }
+  @PostMapping("/commentPost")
+  public ResponseEntity<?> handlePostComment(@RequestParam("comment") String comment,@RequestParam("Post_id") String post_id,
+                                  HttpServletRequest request) {
+    UserInfo userLogin = authenService.getLoginedUser(request);
+    CommentPOJO commentPOJO=new CommentPOJO();
+    if (userLogin != null) {
+      try {
+        CommentRequest commentRequest=new CommentRequest();
+        commentRequest.setPost_id(Long.parseLong(post_id));
+        commentRequest.setContent(comment);
+        commentPOJO= CommentMapper.INSTANCE.commentToCommentPOJO(postService.addComment(commentRequest, userLogin.getId()));
+      } catch (PostException e) {
+        e.printStackTrace();
+        return new ResponseEntity<>("Error:"+e.getMessage(),HttpStatus.BAD_REQUEST);
+      }
+    }
+    try {
+      return new ResponseEntity<>(mapper.writeValueAsString(commentPOJO),HttpStatus.OK);
+    } catch (JsonProcessingException e) {
+      return new ResponseEntity<>("Error:"+e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+  }
 
   @PostMapping("/commentBug")
   public ResponseEntity<?> handleBugComment(@RequestParam("comment") String comment,@RequestParam("Bug_id") String bug_id,
@@ -77,10 +83,17 @@ public class CommentController {
 
   }
 
-  @GetMapping("/commentPost/{id}")
+  @GetMapping("/commentBug/{id}")
   public List<CommentPOJO> getAllCommentBugs(@PathVariable String id) throws PostException {
     List<CommentPOJO> pojoList=new ArrayList<>();
     bugService.getAllPostComment(id).forEach(v->pojoList.add(CommentMapper.INSTANCE.commentToCommentPOJO(v)));
+    return pojoList;
+  }
+
+  @GetMapping("/commentPost/{id}")
+  public List<CommentPOJO> getAllCommentPosts(@PathVariable String id) throws PostException {
+    List<CommentPOJO> pojoList=new ArrayList<>();
+    postService.getAllPostComment(id).forEach(v->pojoList.add(CommentMapper.INSTANCE.commentToCommentPOJO(v)));
     return pojoList;
   }
 
