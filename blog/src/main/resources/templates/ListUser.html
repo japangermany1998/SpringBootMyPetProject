@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body class="container">
+<div class="d-flex justify-content-between">
+<h2>List User (Only admin can see)</h2>
+<a href="/posts">Back</a>
+</div>
+<div th:if="${isAdmin}">
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Roles</th>
+        </tr>
+        <tr th:each="user: ${Users}" th:unless="${user.email} eq 'admin@techmaster.vn' ">
+            <td><a th:href="@{/listUser/{email}(email=${user.email})}" th:text="${user.id}"></a></td>
+            <td th:text="${user.fullname}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.password}"></td>
+            <td><div class="d-flex">
+                <p th:each="role,iter:${user.roles}" th:text="${iter.index != 0 ? ','+role.name : role.name}"></p>
+            </div></td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

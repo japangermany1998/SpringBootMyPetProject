@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body class="container">
+    <h1 style="text-align:center">All Posts</h1>
+    <div class="d-flex justify-content-end">
+    <a th:if="${user ne null}" th:href="@{/posts}">Back</a>
+    <a th:unless="${user ne null}" th:href="@{/}">Back</a>
+    </div>
+    <form th:action="@{/search}" class="w-100 pt-2 pb-2 pr-4 pl-4" method="post" th:object="${searchByKeyTag}">
+        <div class="d-flex justify-content-start">
+            <input type="text" placeholder="Gõ từ khóa cần tìm kiếm" th:field="*{keyword}">
+            <button type="submit">Search</button>
+        </div>
+        <div class="d-flex">
+            <p class="tags">Chọn danh mục:</p>
+            <div>
+            <th:block th:each="tagname:${Tags}">
+                <input type="checkbox" th:field="${searchByKeyTag.tag}" th:value="${tagname.name}">
+                <label th:text="${tagname.name}"></label>
+            </th:block>
+            </div>
+        </div>
+    </form>
+    <div class="d-flex w-25 justify-content-between" th:each="post:${Posts}">
+        <a th:href="@{'/posts/'+${post.id}}" th:text="${post.title}">
+        </a>
+        <p th:text="'User: '+${post.author.fullname}"></p>
+    </div>
+</body>
+<script type="text/javascript"></script>
+</html>
