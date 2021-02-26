@@ -39,14 +39,7 @@ public class PostService implements IPostService{
 
     @Override
     public Page<Post> findAllPaging(int page, int pageSize) {
-        List<Post> posts= postRepository.findAll();
-        Collections.sort(posts);
-        Pageable pageable=PageRequest.of(page,pageSize);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), posts.size());
-        if(start > posts.size())
-            return new PageImpl<>(new ArrayList<>(), pageable, posts.size());
-        return new PageImpl<>(posts.subList(start, end), pageable, posts.size());
+        return postRepository.findAll(PageRequest.of(page,pageSize,Sort.by("lastUpdate").descending()));
     }
 
     @Override
@@ -60,8 +53,7 @@ public class PostService implements IPostService{
 
     @Override
     public List<Post> getRelatedPost(String user){
-        List<Post> posts= postRepository.findAllByUser(user);
-        Collections.sort(posts);
-        return posts.stream().limit(6).collect(Collectors.toList());
+        return postRepository.findAllByUser(user,Sort.by("lastUpdate").descending())
+                .stream().limit(6).collect(Collectors.toList());
     }
 }

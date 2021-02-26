@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
     Optional<Post> findByIdAndAndSlug(long id,String slug);
-    List<Post> findAllByUser(String user);
+    List<Post> findAllByUser(String user, Sort sort);
 }
