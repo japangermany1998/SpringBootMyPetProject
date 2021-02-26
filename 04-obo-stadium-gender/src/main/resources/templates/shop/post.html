@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/layout :: main-fragment(
+                                                ~{:: title},
+                                                '',
+                                                ~{:: #css-resources},
+                                                ~{:: #js-resources},
+                                                ~{:: #main-content}
+                                               )}">
+  <head>
+    <!-- Components CSS-->
+    <th:block id="css-resources">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/components/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/components/products.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/components/lastest-news.css}"/>
+    <!-- Common CSS-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/except-home-page.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/post.css}"/>
+    </th:block>
+    <title>Pack “Logo Sketch” với branding mộc mạc trên Air Max 97 và Air Max Plus</title>
+  </head>
+  <body>
+    <main id="main-content">
+      <div class="breadcrumb container"><a class="previous-page" href="./index.html">Trang ch&#x1EE7;</a><i class="fas fa-chevron-right arrow"></i><span class="current-page">
+          Pack &ldquo;Logo Sketch&rdquo; v&#x1EDB;i branding m&#x1ED9;c m&#x1EA1;c tr&ecirc;n Air Max 97 v&agrave;
+          Air Max Plus</span></div>
+      <div class="main-content-wrapper container">
+        <h1 class="h1 title" th:text="${post.title}"></h1>
+        <div class="author-and-date">By <span class="author" th:text="${post.user}">Cody</span> &middot; <p th:text="${post.lastUpdate}"></p></div>
+        <div class="main-content">
+          <p th:text="${post.content}">
+          </p>
+        </div>
+      </div>
+      <br>
+      <br>
+      <section class="latest-news container">
+        <div class="row">
+          <div class="title col-12">
+            <h2 class="h2">BÀI VIẾT LIÊN QUAN</h2>
+            <div class="slick-arrow"></div>
+          </div>
+        </div>
+        <div class="carousel">
+
+          <div class="news position-relative" th:each="postrelate:${Postrelates}">
+            <div class="card"><img class="card-img-top" th:src="@{'/image/news/'+${postrelate.thumbnail}}" alt="news-1"/>
+              <div class="card-body">
+                <h5 class="card-title" th:text="${postrelate.title}"></h5>
+                <p class="card-text news-short-desc"  th:text="${#strings.abbreviate(post.content, 40)}">
+                </p>
+                <p class="card-text author">By <span class="name" th:text="${postrelate.user}"></span> &middot; <span th:text="${postrelate.lastUpdate}"></span></p>
+              </div>
+            </div>
+            <div class="shadow mx-auto position-absolute"></div>
+          </div>
+
+      </section>
+      <!-- Modals-->
+
+    </main>
+
+
+    <!-- Common Js-->
+    <th:block id="js-resources">
+    <script src="/script/except-home-page.js"></script>
+    <script src="/script/post.js"></script>
+    <script src="/script/lastest-news.js"></script>
+    </th:block>
+  </body>
+</html>

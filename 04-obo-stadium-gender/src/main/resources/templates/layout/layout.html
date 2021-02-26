@@ -27,7 +27,7 @@
     </head>
     <body>
         <!-- HEADER -->
-        <th:block th:replace="~{fragment/header :: ${header}}"></th:block>
+        <th:block th:replace="fragment/header :: full-header(slogan=${header})"></th:block>
 
         <!-- BODY -->
         <th:block th:replace="${mainContent} ?: ~{}"></th:block>

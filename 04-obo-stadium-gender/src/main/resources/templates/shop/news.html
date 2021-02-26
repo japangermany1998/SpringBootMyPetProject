@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/layout :: main-fragment(
+                                                ~{:: title},
+                                                'Tin tức',
+                                                ~{:: #css-resources},
+                                                ~{:: #js-resources},
+                                                ~{:: #main-content}
+                                               )}">
+<head>
+    <title>Tin tức</title>
+    <!-- Components CSS-->
+    <th:block id="css-resources">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/components/header.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/pagination/simplePagination.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/news.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/except-home-page.css}"/>
+    </th:block>
+</head>
+<body>
+<main id="main-content" class="container">
+    <div class="breadcrumb container"><a class="previous-page" href="./index.html">Trang ch&#x1EE7;</a><i
+            class="fas fa-chevron-right arrow"></i><span class="current-page">Tin t&#x1EE9;c</span></div>
+    <!-- List post -->
+    <section class="news-wrapper">
+        <th:block th:each="post,iter: ${posts}">
+        <a class="news news-odd"
+           th:if="${iter.index} % 2 == 0" th:href="@{'/tin-tuc/'+${post.slug}+'/'+${post.id}}">
+            <div class="row">
+                <div class="details col-5 offset-1">
+                    <div class="date" th:text="${post.lastUpdate}"></div>
+                    <div class="title" th:text="${post.title}">
+                    </div>
+                    <div class="short-desc" th:text="${#strings.abbreviate(post.content, 100)}+'...'">
+                    </div>
+                </div>
+                <div class="thumbnail col-lg-6 col-12"><img class="img-fluid"
+                                                            th:attr="src=@{'/image/news/'+${post.thumbnail}}, alt=''"/></div>
+                <div class="details-small col-12">
+                    <div class="date" th:text="${post.lastUpdate}"></div>
+                    <div class="title" th:text="${post.title}">
+                    </div>
+                    <div class="short-desc" th:text="${#strings.abbreviate(post.content, 100)}+'...'">
+
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="news news-even" th:if="${iter.index} % 2 != 0" th:href="@{'/tin-tuc/'+${post.slug}+'/'+${post.id}}">
+            <div class="row">
+                <div class="thumbnail col-lg-6 col-12"><img class="img-fluid"
+                                                        th:attr="src=@{'/image/news/'+${post.thumbnail}}, alt=''"/>
+                </div>
+                <div class="details col-5 mx-1">
+                    <div class="date" th:text="${post.lastUpdate}"></div>
+                    <div class="title" th:text="${post.title}"></div>
+                    <div class="short-desc" th:text="${#strings.abbreviate(post.content, 100)}+'...'">
+                    </div>
+                </div>
+                <div class="details-small col-12">
+                    <div class="date" th:text="${post.lastUpdate}"></div>
+                    <div class="title" th:text="${post.title}"></div>
+                    <div class="short-desc" th:text="${#strings.abbreviate(post.content, 100)}+'...'">
+                    </div>
+                </div>
+            </div>
+        </a>
+        </th:block>
+    </section>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="pagination">
+            <li class="page-item" th:each="paging: ${pagings}" th:classappend="${paging.active}">
+                <a th:href="${'/tin-tuc/'+(paging.index+1)}" class="page-link" th:text="${paging.title}"></a>
+            </li>
+        </ul>
+    </nav>
+
+</main>
+
+<th:block id="js-resources">
+    <script src="/script/except-home-page.js"></script>
+    <script src="/script/news.js"></script>
+</th:block>
+</body>
+</html>

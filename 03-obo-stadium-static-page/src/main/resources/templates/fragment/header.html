@@ -1,4 +1,6 @@
-<th:block th:fragment="full-header">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<th:block th:fragment="full-header(slogan)" >
     <header class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light container"><a class="navbar-brand" href="/"><img class="img-fluid" th:src="@{/image/logo-white.png}" alt="logo"/></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -11,7 +13,7 @@
             </div>
         </nav>
         <div class="content text-center">
-            <h1 class="slogan main-heading text-uppercase">BEST THINGS WITH BEST OFFERS</h1>
+            <h1 th:text="${slogan}" class="slogan main-heading text-uppercase"></h1>
             <div class="search-form justify-content-md-center d-flex">
                 <div class="container">
                     <div class="row justify-content-center">
@@ -46,3 +48,4 @@
         </nav>
     </header>
 </th:block>
+</html>

@@ -10,4 +10,9 @@ public class ShopController {
     public String getIndexPage(Model model) {
         return "shop/index";
     }
+
+    @GetMapping("/news")
+    public String getNewsPage(Model model){
+        return "shop/news";
+    }
 }
