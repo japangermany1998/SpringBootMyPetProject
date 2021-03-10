@@ -24,6 +24,7 @@ import vn.techmaster.blog.service.IPostService;
 import vn.techmaster.blog.utils.FileUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -57,6 +58,13 @@ public class BugController {
         }
     }
 
+    @PostMapping("/uploadImage")
+    public @ResponseBody void uploadFile(
+            @RequestParam("files") MultipartFile[] multipartFiles
+    ) throws IOException {
+        FileUtils.multipart=multipartFiles.clone();
+    }
+
     @PostMapping("/bug")
     public String BugAddEdit(@ModelAttribute BugRequest bugRequest, BindingResult result, HttpServletRequest request, Model model
     , @RequestParam("file") MultipartFile[] multipartFile) throws IOException {
@@ -71,10 +79,11 @@ public class BugController {
                 bug.setContent(bugRequest.getContent());
                 bug.setTitle(bugRequest.getTitle());
                 Long id=bugService.addBugRequest(bug,userInfo.getEmail());
-                    for (MultipartFile file : multipartFile) {
+                    for (MultipartFile file : FileUtils.multipart) {
+                        System.out.println(file.getOriginalFilename());
                         if(file.getSize()>0) {
-
-                            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                            String fileName=StringUtils.cleanPath(file.getOriginalFilename());
+                            System.out.println(fileName);
                             bugService.addImage(fileName, id);
                             FileUtils.saveFile(file, fileName);
                         }

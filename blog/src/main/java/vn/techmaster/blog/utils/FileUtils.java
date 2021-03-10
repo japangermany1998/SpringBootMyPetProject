@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class FileUtils {
+    public static MultipartFile[] multipart;
     public static void saveFile(MultipartFile file,String fileName) throws IOException {
         String uploadDir = "/bugRequest";
 

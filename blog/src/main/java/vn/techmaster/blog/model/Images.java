@@ -1,6 +1,7 @@
 package vn.techmaster.blog.model;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 

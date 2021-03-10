@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=123456
+      - MYSQL_DATABASE=obostadium
+    volumes:
+      - /var/lib/mysql
+      - ./obostadium_post.sql:/docker-entrypoint-initdb.d/init.sql
+  web:
+    image: spring-obo
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/obostadium?allowPublicKeyRetrieval=true&useSSL=false
+    depends_on:
+      - mysql

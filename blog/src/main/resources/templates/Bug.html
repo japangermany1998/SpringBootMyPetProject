@@ -32,20 +32,35 @@
 </div>
 </body>
 <script type="text/javascript">
+    var finalFiles = [];
   $(document).ready(function(){
-    // var multipartfile=[];
 
     $('#fileImage').change(function(){
         $('#images').html('');
-        // multipartfile.push($(this)[0]);
+        // $('#images').removeAttr('.pip');
+
         for(var i = 0; i < $(this)[0].files.length; i++){
-            showImageThumbnail($(this)[0],i);
+            finalFiles.push($(this)[0].files[i]);
         }
-        // for (var i=0;i<multipartfile.length;i++){
-        //     for (var j=0;j<multipartfile.files.length;j++){
-        //         showImageThumbnail(multipartfile[i],j);
-        //     }
-        // }
+        var formData=new FormData();
+        for (var i=0;i<finalFiles.length;i++){
+            formData.append("files",finalFiles[i]);
+            showImageThumbnail(finalFiles,i);
+        }
+        $.ajax({
+            method: "POST",
+            url: "/uploadImage",
+            data: formData,
+            processData: false, //prevent jQuery from automatically transforming the data into a query string
+            contentType: false,
+            cache: false,
+            success: (data) => {
+            },
+            error: (e) => {
+                alert("You failed");
+            }
+        })
+
     });
 
     // $('#formBug').submit(function (event) {
@@ -74,7 +89,7 @@
   });
     //Hiển thị ảnh sau khi chọn file
   function showImageThumbnail(fileInput,index){
-      file = fileInput.files[index];
+      file = fileInput[index];
       reader = new FileReader();
 
       reader.onload = function (e){
@@ -83,6 +98,24 @@
          $('<br>').appendTo($('.pip')[index]);
          $("<span class=\"remove\">Remove</span>").appendTo($('.pip')[index]);
          $(".remove").click(function(){
+             finalFiles.splice(index,1);
+             var formData=new FormData();
+             for (var i=0;i<finalFiles.length;i++){
+                 formData.append("files",finalFiles[i]);
+             }
+             $.ajax({
+                 method: "POST",
+                 url: "/uploadImage",
+                 data: formData,
+                 processData: false, //prevent jQuery from automatically transforming the data into a query string
+                 contentType: false,
+                 cache: false,
+                 success: (data) => {
+                 },
+                 error: (e) => {
+                     alert("You failed");
+                 }
+             })
             $(this).parent(".pip").remove();
          });
       }
