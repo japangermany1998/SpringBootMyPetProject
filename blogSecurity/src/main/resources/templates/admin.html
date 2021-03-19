@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="layout :: head"></head>
+<body>
+<menu th:replace="layout :: menu(title=${user} ? ${user.fullname} + '\'s micro blog': 'Home page')"></menu>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Fullname</th>
+        <th>Email</th>
+    </tr>
+    <tr th:each="usercheck: ${users}" th:unless="${#sets.contains(usercheck.roles,roleAdmin)}">
+        <td ><a th:href="@{'/user/'+${usercheck.id}}" th:text="${usercheck.id}"></a></td>
+        <td th:text="${usercheck.fullname}"></td>
+        <td th:text="${usercheck.email}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layout :: head"></head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Login</h1>
+            <form action="#" th:action="@{/register}" th:object="${userRegister}" method="post">
+                <div class="mb-3">
+                    <label for="Fullname" class="form-label">Fullname</label>
+                    <input type="text" placeholder="Fullname" th:field="*{fullname}" class="form-control" id="fullname" autofocus/>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" placeholder="email" th:field="*{email}" class="form-control" id="email" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="pass" class="form-label">Password</label>
+                    <input type="password" placeholder="Password" th:field="*{password}" class="form-control" id="pass"/>
+                </div>
+<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <!--      <p th:text="*{errorMessage}">Error Message</p>-->
+            <a href="/login">Đăng nhập</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

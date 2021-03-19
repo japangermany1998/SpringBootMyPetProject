@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="layout :: head"></head>
+<body>
+<menu th:replace="layout :: menu(title=${user} ? ${user.fullname} + '\'s micro blog': 'Home page')"></menu>
+<form action="#" th:action="@{/updateRole}" method="post" th:object="${roleReq}">
+    <th:block th:each="role : ${roles}">
+        <input class="form-check-input me-2" type="checkbox" name="roles" th:value="${role.id}"
+        th:checked="${#sets.contains(roleReq.roles,role)}">
+        <label class="form-check-label me-4" th:text="${role.name}"></label>
+    </th:block>
+    <input type="hidden" name="id" th:value="${userId}">
+    <button type="submit">Update</button>
+</form>
+<a href="/posts"></a>
+</body>
+</html>
